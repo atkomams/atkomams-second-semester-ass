@@ -1,0 +1,9 @@
+Vagrant.configure("2") do |config|
+    # hardware
+    config.vm.box = "ubuntu/focal64"
+    config.vm.box_check_update = false
+
+    #networking
+    config.vm.network "private_network", type: "dhcp"
+
+end
