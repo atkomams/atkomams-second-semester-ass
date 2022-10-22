@@ -1,0 +1,43 @@
+---
+- name: Update apt
+  apt: update_cache=yes 
+
+- name: Upgrade all packages on servers
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+
+
+
+- name: Install HTTPS transport for APT
+  apt: name=apt-transport-https state=latest
+
+
+- name: Install Debian packages
+  apt: pkg={{item}} state=present update_cache=yes
+  with_items:
+    - wget
+    - curl
+    - make
+    - g++
+    - gcc
+    - libssl-dev
+    - libsasl2-2
+    - libpq-dev
+    - python3-psycopg2
+    - acl
+    - build-essential
+
+
+- name: Install apache
+  apt: name=apache2 state=latest
+
+- name: Install apache2-php5
+  apt: name=php state=latest
+
+
+- name: Setup PHP date page
+  template: 
+    src: files/index.php.j2
+    dest: /var/www/html/index.php
+  notify: Reload Apache
